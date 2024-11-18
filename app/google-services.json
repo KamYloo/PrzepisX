@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "187663245579",
+    "project_id": "przepisx-3bb74",
+    "storage_bucket": "przepisx-3bb74.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187663245579:android:d708c589201e83bd20420e",
+        "android_client_info": {
+          "package_name": "com.example.przepisx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6Ly_rDu6zvVEw5yXoT79CuFRAyqGPyV4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
