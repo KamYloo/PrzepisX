@@ -6,10 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.przepisx.AuthViewModel
+import com.example.przepisx.ui.screens.DessertsPage
 import com.example.przepisx.ui.screens.HomePage
 import com.example.przepisx.ui.screens.LoginPage
 import com.example.przepisx.ui.screens.ProfilePage
-import com.example.przepisx.ui.screens.RecipesPage
 import com.example.przepisx.ui.screens.RegisterPage
 import com.example.przepisx.ui.screens.SearchPage
 import com.example.przepisx.ui.screens.ShakomatPage
@@ -28,10 +28,10 @@ fun MyAppNavigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel)
         composable("home") {
             HomePage(modifier, navController)
         }
-        // Ekrany po zalogowaniu
+
         composable("recipes") {
             LoggedInScaffold(navController) {
-                RecipesPage(it, navController)
+                DessertsPage(it, navController)
             }
         }
         composable("search") {

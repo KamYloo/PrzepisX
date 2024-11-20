@@ -17,7 +17,7 @@ fun HomePage(
         bottomBar = { BottomNavigationBar(navController) }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            RecipesPage(modifier,navController)
+            DessertsPage(modifier,navController)
         }
     }
 }
