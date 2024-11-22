@@ -72,4 +72,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
     implementation("com.google.firebase:firebase-analytics")
+    implementation ("androidx.activity:activity-compose:1.9.3")
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 }
