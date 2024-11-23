@@ -65,7 +65,7 @@ fun DessertsPage(modifier: Modifier = Modifier, navController: NavController) {
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            DessertList(desserts = dessertList)
+            DessertList(desserts = dessertList, navController)
         }
     }
 }
