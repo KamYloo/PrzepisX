@@ -7,13 +7,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.przepisx.AuthViewModel
 import com.example.przepisx.data.model.strawberryCake
+import com.example.przepisx.ui.screens.AddRecipePage
 import com.example.przepisx.ui.screens.DessertsPage
 import com.example.przepisx.ui.screens.HomePage
 import com.example.przepisx.ui.screens.LoginPage
 import com.example.przepisx.ui.screens.ProfilePage
 import com.example.przepisx.ui.screens.RecipePage
 import com.example.przepisx.ui.screens.RegisterPage
-import com.example.przepisx.ui.screens.SearchPage
 import com.example.przepisx.ui.screens.ShakomatPage
 
 @Composable
@@ -43,9 +43,9 @@ fun MyAppNavigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel)
             }
         }
 
-        composable("search") {
+        composable("addRecipe") {
             LoggedInScaffold(navController) {
-                SearchPage(it, navController)
+                AddRecipePage(it, navController)
             }
         }
         composable("shakomat") {

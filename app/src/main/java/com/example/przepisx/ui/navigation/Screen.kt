@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Screen(val route: String, val title: String, val icon: ImageVector) {
     object Recipes : Screen("recipes", "Przepisy", Icons.Default.List)
-    object Search : Screen("search", "Wyszukiwarka", Icons.Default.Search)
+    object Search : Screen("addRecipe", "Dodaj Przepis", Icons.Default.Search)
     object Shakomat : Screen("shakomat", "Shakomat", Icons.Default.Refresh)
     object Profile : Screen("profile", "Profil", Icons.Default.Person)
 }
