@@ -1,20 +1,19 @@
 package com.example.przepisx.data.model
 
-import androidx.annotation.DrawableRes
 import com.example.przepisx.R
+import java.util.UUID
 
-// I have prepared the following data structures and resources to skip the boring part
 
 data class Recipe(
-    val title: String,
-    val category: String,
-    val cookingTime: String,
-    val energy: String,
-    val description: String,
-    val ingredients: List<Ingredient>
+    val id: String = UUID.randomUUID().toString(),
+    val title: String = "",
+    val category: String = "",
+    val cookingTime: String = "",
+    val energy: String = "",
+    val description: String = "",
+    val ingredients: List<Ingredient> = emptyList(),
+    val steps: List<String> = emptyList()
 )
-
-data class Ingredient(@DrawableRes val image: Int, val title: String, val subtitle: String)
 
 val strawberryCake = Recipe(
     title = "Ciasto Truskawkowe",
@@ -29,6 +28,13 @@ val strawberryCake = Recipe(
         Ingredient(R.drawable.strawberry, "Truskawki", "200 g"),
         Ingredient(R.drawable.suggar, "Cukier", "1 szklanka"),
         Ingredient(R.drawable.mind, "Mięta", "20 g"),
-        Ingredient(R.drawable.vanilla, "Cukier Waniliowy", "1/2 łyżeczka"),
+        Ingredient(R.drawable.vanilla, "Cukier Waniliowy", "1/2 łyżeczki"),
+    ),
+    steps = listOf(
+        "Wymieszaj mąkę i cukier.",
+        "Dodaj jajka i sok z cytryny, dokładnie wymieszaj.",
+        "Dodaj pokrojone truskawki i delikatnie wymieszaj.",
+        "Piecz w temperaturze 180°C przez około 50 minut.",
+        "Podawaj z miętą na wierzchu."
     )
 )

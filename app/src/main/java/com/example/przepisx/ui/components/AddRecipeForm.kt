@@ -1,5 +1,6 @@
 package com.example.przepisx.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,13 +13,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.przepisx.R
+import com.example.przepisx.data.model.Ingredient
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddRecipeForm(
-    onSave: (String, String, String, String, String, List<String>, String) -> Unit
+    onSave: (String, String, String, String, String, List<Ingredient>, List<String>) -> Unit
 ) {
     var title by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
@@ -28,8 +32,16 @@ fun AddRecipeForm(
     var steps by remember { mutableStateOf("") }
 
     val categories = listOf("Czekoladowe", "Owocowe", "Ciasta", "Lody", "Szybkie Desery")
-    val predefinedIngredients = listOf("Mąka", "Cukier", "Masło", "Jajka", "Czekolada", "Śmietana", "Truskawki")
-    var selectedIngredients by remember { mutableStateOf(mutableListOf<String>()) }
+    val predefinedIngredients = listOf(
+        Ingredient(R.drawable.flour, "Mąka", ""),
+        Ingredient(R.drawable.suggar, "Cukier", ""),
+        Ingredient(R.drawable.eggs, "Jajka", ""),
+        Ingredient(R.drawable.strawberry, "Truskawki", "")
+    )
+
+    var selectedIngredients by remember { mutableStateOf(mutableListOf<Ingredient>()) }
+    var selectedIngredient by remember { mutableStateOf(predefinedIngredients.first()) }
+    var ingredientAmount by remember { mutableStateOf("") }
 
     var isCategoryDropdownExpanded by remember { mutableStateOf(false) }
     var isIngredientDropdownExpanded by remember { mutableStateOf(false) }
@@ -72,7 +84,9 @@ fun AddRecipeForm(
                 label = { Text("Kategoria") },
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(isCategoryDropdownExpanded) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor() // Dodano brakujący modyfikator
             )
             ExposedDropdownMenu(
                 expanded = isCategoryDropdownExpanded,
@@ -90,23 +104,30 @@ fun AddRecipeForm(
             }
         }
 
+
+
+
+
         Text(
             text = "Składniki",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary
         )
 
+        // Dropdown for ingredient
         ExposedDropdownMenuBox(
             expanded = isIngredientDropdownExpanded,
             onExpandedChange = { isIngredientDropdownExpanded = !isIngredientDropdownExpanded }
         ) {
             OutlinedTextField(
-                value = selectedIngredients.joinToString(", "),
+                value = selectedIngredient.name,
                 onValueChange = {},
-                label = { Text("Dodane składniki") },
+                label = { Text("Składnik") },
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(isIngredientDropdownExpanded) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor()
             )
             ExposedDropdownMenu(
                 expanded = isIngredientDropdownExpanded,
@@ -114,16 +135,36 @@ fun AddRecipeForm(
             ) {
                 predefinedIngredients.forEach { ingredient ->
                     DropdownMenuItem(
-                        text = { Text(ingredient) },
+                        text = { Text(ingredient.name) },
                         onClick = {
-                            if (!selectedIngredients.contains(ingredient)) {
-                                selectedIngredients.add(ingredient)
-                            }
+                            selectedIngredient = ingredient
                             isIngredientDropdownExpanded = false
                         }
                     )
                 }
             }
+        }
+
+        OutlinedTextField(
+            value = ingredientAmount,
+            onValueChange = { ingredientAmount = it },
+            label = { Text("Ilość") },
+            placeholder = { Text("np. 200g") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Button(
+            onClick = {
+                if (ingredientAmount.isNotBlank()) {
+                    selectedIngredients.add(
+                        selectedIngredient.copy(quantity = ingredientAmount)
+                    )
+                    ingredientAmount = ""
+                }
+            },
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text("Dodaj")
         }
 
         LazyColumn(
@@ -139,7 +180,16 @@ fun AddRecipeForm(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(ingredient, style = MaterialTheme.typography.bodyMedium)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            painter = painterResource(id = ingredient.image),
+                            contentDescription = null,
+                            modifier = Modifier.size(40.dp).padding(end = 8.dp)
+                        )
+                        Text("${ingredient.name} - ${ingredient.quantity}", style = MaterialTheme.typography.bodyMedium)
+                    }
                     IconButton(onClick = { selectedIngredients.remove(ingredient) }) {
                         Icon(Icons.Default.Delete, contentDescription = "Usuń składnik")
                     }
@@ -195,7 +245,7 @@ fun AddRecipeForm(
             onClick = {
                 onSave(
                     title, category, preparationTime, calories, description,
-                    selectedIngredients.toList(), steps
+                    selectedIngredients, steps.split("\n")
                 )
             },
             modifier = Modifier.align(Alignment.End)

@@ -126,7 +126,7 @@ fun Content(recipe: Recipe, scrollState: LazyListState) {
 @Composable
 fun IngredientsList(recipe: Recipe) {
     EasyGrid(nColumns = 3, items = recipe.ingredients) {
-        IngredientCard(it.image, it.title, it.subtitle, Modifier)
+        IngredientCard(it.image, it.name, it.quantity, Modifier)
     }
 
 }

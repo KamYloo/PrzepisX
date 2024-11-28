@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.example.przepisx.ui.navigation.MyAppNavigation
 import com.example.przepisx.ui.theme.PrzepisXTheme
+import com.example.przepisx.viewModel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

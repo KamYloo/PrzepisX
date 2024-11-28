@@ -28,8 +28,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.przepisx.AuthState
-import com.example.przepisx.AuthViewModel
+import com.example.przepisx.viewModel.AuthState
+import com.example.przepisx.viewModel.AuthViewModel
 import com.example.przepisx.R
 
 @OptIn(ExperimentalMaterial3Api::class)

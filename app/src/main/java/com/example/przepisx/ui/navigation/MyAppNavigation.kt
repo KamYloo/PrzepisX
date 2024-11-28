@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.przepisx.AuthViewModel
+import com.example.przepisx.viewModel.AuthViewModel
 import com.example.przepisx.data.model.strawberryCake
 import com.example.przepisx.ui.screens.AddRecipePage
 import com.example.przepisx.ui.screens.DessertsPage
