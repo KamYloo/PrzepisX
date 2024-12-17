@@ -27,6 +27,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -73,7 +76,7 @@ fun RecipePage(recipeId: String, navController: NavController, viewModel: Desser
                     Column {
                         Box(Modifier.height(200.dp)) {
                             Image(
-                                painter = painterResource(id = R.drawable.strawberry_pie_1), // Replace with dessert.image if dynamic
+                                painter = painterResource(id = R.drawable.strawberry_pie_1),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.fillMaxWidth()
@@ -134,7 +137,6 @@ fun RecipePage(recipeId: String, navController: NavController, viewModel: Desser
                 )
             }
             is DessertDetailsState.Idle -> {
-                // No action required
             }
         }
     }
@@ -142,12 +144,22 @@ fun RecipePage(recipeId: String, navController: NavController, viewModel: Desser
 
 @Composable
 fun Content(dessert: Dessert, scrollState: LazyListState) {
+    var selectedTab by remember { mutableStateOf("Składniki") }
+
     LazyColumn(contentPadding = PaddingValues(top = 250.dp), state = scrollState) {
         item {
             BasicInfo(dessert)
             Description(dessert)
-            IngredientsHeader()
-            IngredientsList(dessert)
+
+            IngredientsHeader(selectedTab) { tab ->
+                selectedTab = tab
+            }
+
+            if (selectedTab == "Składniki") {
+                IngredientsList(dessert)
+            } else {
+                StepsList(dessert)
+            }
         }
     }
 }
@@ -157,7 +169,6 @@ fun IngredientsList(dessert: Dessert) {
     EasyGrid(nColumns = 3, items = dessert.dessertIngredients) {
         IngredientCard(it.image, it.name, it.quantity, Modifier)
     }
-
 }
 
 
@@ -216,7 +227,7 @@ fun IngredientCard(
 
 
 @Composable
-fun IngredientsHeader() {
+fun IngredientsHeader(selectedTab: String, onTabSelected: (String) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -225,15 +236,19 @@ fun IngredientsHeader() {
             .fillMaxWidth()
             .height(44.dp)
     ) {
-        TabButton("Składniki", true, Modifier.weight(1f))
-        TabButton("Kroki Przygotowania", false, Modifier.weight(1f))
+        TabButton("Składniki", selectedTab == "Składniki", Modifier.weight(1f)) {
+            onTabSelected("Składniki")
+        }
+        TabButton("Kroki Przygotowania", selectedTab == "Kroki Przygotowania", Modifier.weight(1f)) {
+            onTabSelected("Kroki Przygotowania")
+        }
     }
 }
 
 @Composable
-fun TabButton(text: String, active: Boolean, modifier: Modifier) {
+fun TabButton(text: String, active: Boolean, modifier: Modifier, onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         modifier = modifier.fillMaxHeight(),
         elevation = null,
         colors = if (active) ButtonDefaults.buttonColors(
@@ -266,8 +281,8 @@ fun BasicInfo(dessert: Dessert) {
             .fillMaxWidth()
             .padding(top = 16.dp)
     ) {
-        InfoColumn(R.drawable.ic_clock, dessert.cookingTime)
-        InfoColumn(R.drawable.ic_flame, dessert.energy)
+        InfoColumn(R.drawable.ic_clock, dessert.cookingTime+" min")
+        InfoColumn(R.drawable.ic_flame, dessert.energy+" kcal")
     }
 }
 
@@ -284,5 +299,23 @@ fun InfoColumn(@DrawableRes iconResouce: Int, text: String) {
     }
 }
 
+@Composable
+fun StepsList(dessert: Dessert) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        dessert.steps.forEachIndexed { index, step ->
+            Row(modifier = Modifier.padding(vertical = 8.dp)) {
+                Text(
+                    text = "${index + 1}. ",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+                Text(
+                    text = step,
+                    fontSize = 16.sp
+                )
+            }
+        }
+    }
+}
 
 
