@@ -37,9 +37,10 @@ fun MyAppNavigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel)
             }
         }
 
-        composable("recipePage") {
+        composable("recipePage/{recipeId}") { backStackEntry ->
+            val recipeId = backStackEntry.arguments?.getString("recipeId") ?: ""
             LoggedInScaffold(navController) {
-                RecipePage(strawberryCake,it, navController)
+                RecipePage(recipeId = recipeId, navController)
             }
         }
 

@@ -24,6 +24,9 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -36,78 +39,104 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.Medium
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.przepisx.R
 import com.example.przepisx.data.model.Dessert
-import com.example.przepisx.data.model.strawberryCake
 import com.example.przepisx.ui.theme.Pink40
+import com.example.przepisx.viewModel.DessertDetailsState
+import com.example.przepisx.viewModel.DessertViewModel
 
 @Composable
-fun RecipePage(dessert: Dessert, modifier: Modifier = Modifier, navController: NavController) {
+fun RecipePage(recipeId: String, navController: NavController, viewModel: DessertViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+    val dessertDetailsState by viewModel.dessertDetailsState.collectAsState()
+
+    LaunchedEffect(recipeId) {
+        viewModel.loadDessertById(recipeId)
+    }
+
     Box {
         val scrollState = rememberLazyListState()
 
-        Content(dessert, scrollState)
-        TopAppBar(
-            contentPadding = PaddingValues(), backgroundColor = White, modifier = Modifier.height(250.dp)
-        ) {
-            Column {
-                Box(Modifier.height(200.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.strawberry_pie_1),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+        when (dessertDetailsState) {
+            is DessertDetailsState.Loading -> {
+                Text("Loading...", modifier = Modifier.align(Alignment.Center))
+            }
+            is DessertDetailsState.Success -> {
+                val dessert = (dessertDetailsState as DessertDetailsState.Success).dessert
+                Content(dessert, scrollState)
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                            .background(
-                                Brush.verticalGradient(
-                                    colorStops = arrayOf(
-                                        Pair(0.4f, Transparent),
-                                        Pair(1f, White)
-                                    )
-                                )
+                TopAppBar(
+                    contentPadding = PaddingValues(), backgroundColor = White, modifier = Modifier.height(250.dp)
+                ) {
+                    Column {
+                        Box(Modifier.height(200.dp)) {
+                            Image(
+                                painter = painterResource(id = R.drawable.strawberry_pie_1), // Replace with dessert.image if dynamic
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.fillMaxWidth()
                             )
-                    )
 
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        , verticalAlignment = Alignment.Bottom) {
-                        Text(
-                            dessert.category,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier
-                                .background(LightGray)
-                                .padding(vertical = 6.dp, horizontal = 16.dp)
-                        )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                                    .background(
+                                        Brush.verticalGradient(
+                                            colorStops = arrayOf(
+                                                Pair(0.4f, Transparent),
+                                                Pair(1f, White)
+                                            )
+                                        )
+                                    )
+                            )
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(200.dp)
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                verticalAlignment = Alignment.Bottom
+                            ) {
+                                Text(
+                                    dessert.category,
+                                    fontWeight = FontWeight.Medium,
+                                    modifier = Modifier
+                                        .background(LightGray)
+                                        .padding(vertical = 6.dp, horizontal = 16.dp)
+                                )
+                            }
+                        }
+
+                        Column(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(50.dp),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                dessert.title,
+                                fontSize = 26.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(horizontal = 16.dp)
+                            )
+                        }
                     }
                 }
-
-                Column (
-                    Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        dessert.title,
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(horizontal = 16.dp))
-                }
+            }
+            is DessertDetailsState.Error -> {
+                Text(
+                    text = (dessertDetailsState as DessertDetailsState.Error).message,
+                    modifier = Modifier.align(Alignment.Center),
+                    color = androidx.compose.ui.graphics.Color.Red
+                )
+            }
+            is DessertDetailsState.Idle -> {
+                // No action required
             }
         }
-
     }
 }
 
@@ -257,11 +286,3 @@ fun InfoColumn(@DrawableRes iconResouce: Int, text: String) {
 
 
 
-@Preview(showBackground = true, widthDp = 380, heightDp = 1400)
-@Composable
-fun PreviewRecipePage() {
-
-    val navController = rememberNavController()
-
-    RecipePage(strawberryCake, navController = navController)
-}

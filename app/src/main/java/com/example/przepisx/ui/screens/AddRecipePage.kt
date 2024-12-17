@@ -12,17 +12,19 @@ import androidx.navigation.NavController
 import com.example.przepisx.data.model.Dessert
 import com.example.przepisx.ui.components.AddRecipeForm
 import com.example.przepisx.viewModel.AddRecipeState
-import com.example.przepisx.viewModel.RecipeViewModel
+import com.example.przepisx.viewModel.DessertViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun AddRecipePage(modifier: Modifier = Modifier, navController: NavController) {
 
-    val recipeViewModel: RecipeViewModel = viewModel()
-    val addRecipeState by recipeViewModel.addRecipeState.collectAsState()
+    val dessertViewModel: DessertViewModel = viewModel()
+    val addRecipeState by dessertViewModel.addRecipeState.collectAsState()
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
     AddRecipeForm(
         onSave = { title, category, cookingTime, energy, description, ingredients, steps ->
-            recipeViewModel.addRecipe(
+            dessertViewModel.addRecipe(
                 Dessert(
                     title = title,
                     category = category,
@@ -30,7 +32,8 @@ fun AddRecipePage(modifier: Modifier = Modifier, navController: NavController) {
                     energy = energy,
                     description = description,
                     dessertIngredients = ingredients,
-                    steps = steps
+                    steps = steps,
+                    authorId = userId
                 )
             )
         }

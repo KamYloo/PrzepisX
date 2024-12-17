@@ -7,10 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun CategoryRow(categories: List<String>) {
+fun CategoryRow(
+    categories: List<String>,
+    selectedCategory: String?,
+    onCategorySelected: (String) -> Unit
+) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items(categories) { category ->
-            Chip(text = category)
+            Chip(
+                text = category,
+                isSelected = category == selectedCategory,
+                onClick = { onCategorySelected(category) }
+            )
         }
     }
 }
