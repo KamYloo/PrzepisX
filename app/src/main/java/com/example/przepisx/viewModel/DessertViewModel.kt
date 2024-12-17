@@ -58,6 +58,10 @@ class DessertViewModel(private val repository: DessertRepository = DessertReposi
         }
     }
 
+    suspend fun deleteDessert(dessertId: String) {
+        repository.deleteDessert(dessertId)
+    }
+
 }
 
 sealed class AddRecipeState {

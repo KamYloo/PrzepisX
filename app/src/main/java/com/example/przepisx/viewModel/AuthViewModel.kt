@@ -11,6 +11,9 @@ class AuthViewModel : ViewModel() {
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState
 
+    val currentUserId: String
+        get() = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+
     init {
         checkAuthStatus()
     }

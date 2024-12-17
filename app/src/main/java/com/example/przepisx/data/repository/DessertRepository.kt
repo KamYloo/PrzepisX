@@ -41,4 +41,14 @@ class DessertRepository {
             Result.failure(e)
         }
     }
+
+    suspend fun deleteDessert(dessertId: String): Result<Unit> {
+        return try {
+            dessertsCollection.document(dessertId).delete().await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }
