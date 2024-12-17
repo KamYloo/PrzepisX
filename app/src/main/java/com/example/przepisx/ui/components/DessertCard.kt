@@ -43,7 +43,7 @@ fun DessertCard(dessert: Dessert, navController: NavController) {
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             Image(
-                painter = painterResource(id = R.drawable.strawberry_pie_1),
+                painter = painterResource(id = R.drawable.dessert_card_ic),
                 contentDescription = dessert.title,
                 modifier = Modifier
                     .padding(8.dp)

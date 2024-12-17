@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.przepisx.viewModel.AuthViewModel
 import com.example.przepisx.ui.screens.AddRecipePage
 import com.example.przepisx.ui.screens.DessertsPage
+import com.example.przepisx.ui.screens.EditRecipePage
 import com.example.przepisx.ui.screens.HomePage
 import com.example.przepisx.ui.screens.LoginPage
 import com.example.przepisx.ui.screens.ProfilePage
@@ -48,6 +49,12 @@ fun MyAppNavigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel)
                 AddRecipePage(it, navController)
             }
         }
+
+        composable("edit_recipe/{recipeId}") { backStackEntry ->
+            val recipeId = backStackEntry.arguments?.getString("recipeId") ?: return@composable
+            EditRecipePage(recipeId, navController)
+        }
+
         composable("shakomat") {
             LoggedInScaffold(navController) {
                 ShakomatPage(it, navController)

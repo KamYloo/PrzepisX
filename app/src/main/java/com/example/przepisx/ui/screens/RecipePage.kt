@@ -83,7 +83,7 @@ fun RecipePage(recipeId: String, navController: NavController, authViewModel: Au
                     Column {
                         Box(Modifier.height(200.dp)) {
                             Image(
-                                painter = painterResource(id = R.drawable.strawberry_pie_1),
+                                painter = painterResource(id = R.drawable.dessert_detail_ic),
                                 contentDescription = null,
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier.fillMaxWidth()
@@ -135,6 +135,18 @@ fun RecipePage(recipeId: String, navController: NavController, authViewModel: Au
                             Spacer(modifier = Modifier.weight(1f))
 
                             if (currentUserId == dessert.authorId) {
+
+                                IconButton(onClick = {
+                                    navController.navigate("edit_recipe/${dessert.id}")
+                                }) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.edit_ic),
+                                        contentDescription = "Edit",
+                                        modifier = Modifier.size(24.dp),
+                                        tint = Pink40
+                                    )
+                                }
+
                                 IconButton(onClick = {
                                     coroutineScope.launch {
                                         viewModel.deleteDessert(dessert.id)

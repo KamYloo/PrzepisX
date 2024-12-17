@@ -42,6 +42,12 @@ class DessertRepository {
         }
     }
 
+    suspend fun updateDessert(recipeId: String, updatedDessert: Dessert) {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("desserts").document(recipeId).set(updatedDessert).await()
+    }
+
+
     suspend fun deleteDessert(dessertId: String): Result<Unit> {
         return try {
             dessertsCollection.document(dessertId).delete().await()

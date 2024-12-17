@@ -58,6 +58,18 @@ class DessertViewModel(private val repository: DessertRepository = DessertReposi
         }
     }
 
+    fun updateDessert(recipeId: String, updatedDessert: Dessert) {
+        viewModelScope.launch {
+            try {
+                repository.updateDessert(recipeId, updatedDessert)
+                _addRecipeState.value = AddRecipeState.Success
+            } catch (e: Exception) {
+                _addRecipeState.value = AddRecipeState.Error(e.message ?: "Nieznany błąd")
+            }
+        }
+    }
+
+
     suspend fun deleteDessert(dessertId: String) {
         repository.deleteDessert(dessertId)
     }
