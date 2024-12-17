@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.przepisx.data.model.Recipe
+import com.example.przepisx.data.model.Dessert
 import com.example.przepisx.ui.components.AddRecipeForm
 import com.example.przepisx.viewModel.AddRecipeState
 import com.example.przepisx.viewModel.RecipeViewModel
@@ -23,13 +23,13 @@ fun AddRecipePage(modifier: Modifier = Modifier, navController: NavController) {
     AddRecipeForm(
         onSave = { title, category, cookingTime, energy, description, ingredients, steps ->
             recipeViewModel.addRecipe(
-                Recipe(
+                Dessert(
                     title = title,
                     category = category,
                     cookingTime = cookingTime,
                     energy = energy,
                     description = description,
-                    ingredients = ingredients,
+                    dessertIngredients = ingredients,
                     steps = steps
                 )
             )

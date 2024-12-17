@@ -2,7 +2,7 @@ package com.example.przepisx.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.przepisx.data.model.Recipe
+import com.example.przepisx.data.model.Dessert
 import com.example.przepisx.data.repository.RecipeRepository
 
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,10 +13,10 @@ class RecipeViewModel(private val repository: RecipeRepository = RecipeRepositor
     private val _addRecipeState = MutableStateFlow<AddRecipeState>(AddRecipeState.Idle)
     val addRecipeState: StateFlow<AddRecipeState> = _addRecipeState
 
-    fun addRecipe(recipe: Recipe) {
+    fun addRecipe(dessert: Dessert) {
         viewModelScope.launch {
             _addRecipeState.value = AddRecipeState.Loading
-            val result = repository.addRecipe(recipe)
+            val result = repository.addRecipe(dessert)
             if (result.isSuccess) {
                 _addRecipeState.value = AddRecipeState.Success
             } else {

@@ -17,12 +17,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.przepisx.R
-import com.example.przepisx.data.model.Ingredient
+import com.example.przepisx.data.model.DessertIngredient
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddRecipeForm(
-    onSave: (String, String, String, String, String, List<Ingredient>, List<String>) -> Unit
+    onSave: (String, String, String, String, String, List<DessertIngredient>, List<String>) -> Unit
 ) {
     var title by remember { mutableStateOf("") }
     var category by remember { mutableStateOf("") }
@@ -32,15 +32,15 @@ fun AddRecipeForm(
     var steps by remember { mutableStateOf("") }
 
     val categories = listOf("Czekoladowe", "Owocowe", "Ciasta", "Lody", "Szybkie Desery")
-    val predefinedIngredients = listOf(
-        Ingredient(R.drawable.flour, "Mąka", ""),
-        Ingredient(R.drawable.suggar, "Cukier", ""),
-        Ingredient(R.drawable.eggs, "Jajka", ""),
-        Ingredient(R.drawable.strawberry, "Truskawki", "")
+    val predefinedDessertIngredients = listOf(
+        DessertIngredient(R.drawable.flour, "Mąka", ""),
+        DessertIngredient(R.drawable.suggar, "Cukier", ""),
+        DessertIngredient(R.drawable.eggs, "Jajka", ""),
+        DessertIngredient(R.drawable.strawberry, "Truskawki", "")
     )
 
-    var selectedIngredients by remember { mutableStateOf(mutableListOf<Ingredient>()) }
-    var selectedIngredient by remember { mutableStateOf(predefinedIngredients.first()) }
+    var selectedDessertIngredients by remember { mutableStateOf(mutableListOf<DessertIngredient>()) }
+    var selectedIngredient by remember { mutableStateOf(predefinedDessertIngredients.first()) }
     var ingredientAmount by remember { mutableStateOf("") }
 
     var isCategoryDropdownExpanded by remember { mutableStateOf(false) }
@@ -133,7 +133,7 @@ fun AddRecipeForm(
                 expanded = isIngredientDropdownExpanded,
                 onDismissRequest = { isIngredientDropdownExpanded = false }
             ) {
-                predefinedIngredients.forEach { ingredient ->
+                predefinedDessertIngredients.forEach { ingredient ->
                     DropdownMenuItem(
                         text = { Text(ingredient.name) },
                         onClick = {
@@ -156,7 +156,7 @@ fun AddRecipeForm(
         Button(
             onClick = {
                 if (ingredientAmount.isNotBlank()) {
-                    selectedIngredients.add(
+                    selectedDessertIngredients.add(
                         selectedIngredient.copy(quantity = ingredientAmount)
                     )
                     ingredientAmount = ""
@@ -172,7 +172,7 @@ fun AddRecipeForm(
                 .fillMaxWidth()
                 .heightIn(max = 150.dp)
         ) {
-            items(selectedIngredients) { ingredient ->
+            items(selectedDessertIngredients) { ingredient ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -190,7 +190,7 @@ fun AddRecipeForm(
                         )
                         Text("${ingredient.name} - ${ingredient.quantity}", style = MaterialTheme.typography.bodyMedium)
                     }
-                    IconButton(onClick = { selectedIngredients.remove(ingredient) }) {
+                    IconButton(onClick = { selectedDessertIngredients.remove(ingredient) }) {
                         Icon(Icons.Default.Delete, contentDescription = "Usuń składnik")
                     }
                 }
@@ -245,7 +245,7 @@ fun AddRecipeForm(
             onClick = {
                 onSave(
                     title, category, preparationTime, calories, description,
-                    selectedIngredients, steps.split("\n")
+                    selectedDessertIngredients, steps.split("\n")
                 )
             },
             modifier = Modifier.align(Alignment.End)

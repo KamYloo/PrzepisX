@@ -42,16 +42,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.przepisx.R
-import com.example.przepisx.data.model.Recipe
+import com.example.przepisx.data.model.Dessert
 import com.example.przepisx.data.model.strawberryCake
 import com.example.przepisx.ui.theme.Pink40
 
 @Composable
-fun RecipePage(recipe: Recipe, modifier: Modifier = Modifier, navController: NavController) {
+fun RecipePage(dessert: Dessert, modifier: Modifier = Modifier, navController: NavController) {
     Box {
         val scrollState = rememberLazyListState()
 
-        Content(recipe, scrollState)
+        Content(dessert, scrollState)
         TopAppBar(
             contentPadding = PaddingValues(), backgroundColor = White, modifier = Modifier.height(250.dp)
         ) {
@@ -84,7 +84,7 @@ fun RecipePage(recipe: Recipe, modifier: Modifier = Modifier, navController: Nav
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                         , verticalAlignment = Alignment.Bottom) {
                         Text(
-                            recipe.category,
+                            dessert.category,
                             fontWeight = FontWeight.Medium,
                             modifier = Modifier
                                 .background(LightGray)
@@ -100,7 +100,7 @@ fun RecipePage(recipe: Recipe, modifier: Modifier = Modifier, navController: Nav
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        recipe.title,
+                        dessert.title,
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(horizontal = 16.dp))
@@ -112,20 +112,20 @@ fun RecipePage(recipe: Recipe, modifier: Modifier = Modifier, navController: Nav
 }
 
 @Composable
-fun Content(recipe: Recipe, scrollState: LazyListState) {
+fun Content(dessert: Dessert, scrollState: LazyListState) {
     LazyColumn(contentPadding = PaddingValues(top = 250.dp), state = scrollState) {
         item {
-            BasicInfo(recipe)
-            Description(recipe)
+            BasicInfo(dessert)
+            Description(dessert)
             IngredientsHeader()
-            IngredientsList(recipe)
+            IngredientsList(dessert)
         }
     }
 }
 
 @Composable
-fun IngredientsList(recipe: Recipe) {
-    EasyGrid(nColumns = 3, items = recipe.ingredients) {
+fun IngredientsList(dessert: Dessert) {
+    EasyGrid(nColumns = 3, items = dessert.dessertIngredients) {
         IngredientCard(it.image, it.name, it.quantity, Modifier)
     }
 
@@ -221,24 +221,24 @@ fun TabButton(text: String, active: Boolean, modifier: Modifier) {
 
 
 @Composable
-fun Description(recipe: Recipe) {
+fun Description(dessert: Dessert) {
     Text(
-        text = recipe.description,
+        text = dessert.description,
         fontWeight = Medium,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)
     )
 }
 
 @Composable
-fun BasicInfo(recipe: Recipe) {
+fun BasicInfo(dessert: Dessert) {
     Row(
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp)
     ) {
-        InfoColumn(R.drawable.ic_clock, recipe.cookingTime)
-        InfoColumn(R.drawable.ic_flame, recipe.energy)
+        InfoColumn(R.drawable.ic_clock, dessert.cookingTime)
+        InfoColumn(R.drawable.ic_flame, dessert.energy)
     }
 }
 

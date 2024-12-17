@@ -53,6 +53,7 @@ fun MyAppNavigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel)
                 ShakomatPage(it, navController)
             }
         }
+
         composable("profile") {
             LoggedInScaffold(navController) {
                 ProfilePage(it, navController, authViewModel)

@@ -2,7 +2,7 @@ package com.example.przepisx.data.model
 
 import androidx.annotation.DrawableRes
 
-data class Ingredient(
+data class DessertIngredient(
     @DrawableRes
     val image: Int,
     val name: String,
