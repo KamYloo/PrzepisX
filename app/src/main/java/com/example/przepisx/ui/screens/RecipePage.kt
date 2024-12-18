@@ -59,7 +59,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun RecipePage(recipeId: String, navController: NavController, authViewModel: AuthViewModel,viewModel: DessertViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val dessertDetailsState by viewModel.dessertDetailsState.collectAsState()
-    val currentUserId = authViewModel.currentUserId // Retrieve the logged-in user ID
+    val currentUserId = authViewModel.currentUserId
     val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(recipeId) {

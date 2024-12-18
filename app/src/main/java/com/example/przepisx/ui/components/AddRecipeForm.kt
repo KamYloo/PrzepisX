@@ -36,10 +36,17 @@ fun AddRecipeForm(
         DessertIngredient(R.drawable.flour, "Mąka", ""),
         DessertIngredient(R.drawable.suggar, "Cukier", ""),
         DessertIngredient(R.drawable.eggs, "Jajka", ""),
-        DessertIngredient(R.drawable.strawberry, "Truskawki", "")
+        DessertIngredient(R.drawable.strawberry, "Truskawki", ""),
+        DessertIngredient(R.drawable.kakao, "Kakao", ""),
+        DessertIngredient(R.drawable.milk_powder, "Mleko w Proszku", ""),
+        DessertIngredient(R.drawable.cream_30, "Smietana30%", ""),
+        DessertIngredient(R.drawable.cream_36, "Smietana36%", ""),
+        DessertIngredient(R.drawable.mascarpone, "Mascarpone", ""),
+        DessertIngredient(R.drawable.chocolate, "Chocolate", ""),
+        DessertIngredient(R.drawable.oil, "Oil", "")
     )
 
-    var selectedDessertIngredients by remember { mutableStateOf(mutableListOf<DessertIngredient>()) }
+    val selectedDessertIngredients = remember { mutableStateListOf<DessertIngredient>() }
     var selectedIngredient by remember { mutableStateOf(predefinedDessertIngredients.first()) }
     var ingredientAmount by remember { mutableStateOf("") }
 
@@ -56,7 +63,7 @@ fun AddRecipeForm(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Dodaj Nowy Przepis",
+            text = "Dodaj Nowy Przepis z Listą Składników",
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -86,7 +93,7 @@ fun AddRecipeForm(
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(isCategoryDropdownExpanded) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .menuAnchor() // Dodano brakujący modyfikator
+                    .menuAnchor()
             )
             ExposedDropdownMenu(
                 expanded = isCategoryDropdownExpanded,
@@ -104,17 +111,13 @@ fun AddRecipeForm(
             }
         }
 
-
-
-
-
+        // Sekcja składników
         Text(
             text = "Składniki",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary
         )
 
-        // Dropdown for ingredient
         ExposedDropdownMenuBox(
             expanded = isIngredientDropdownExpanded,
             onExpandedChange = { isIngredientDropdownExpanded = !isIngredientDropdownExpanded }
@@ -164,13 +167,13 @@ fun AddRecipeForm(
             },
             modifier = Modifier.align(Alignment.End)
         ) {
-            Text("Dodaj")
+            Text("Dodaj Składnik")
         }
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = 150.dp)
+                .heightIn(max = 200.dp)
         ) {
             items(selectedDessertIngredients) { ingredient ->
                 Row(
@@ -197,6 +200,7 @@ fun AddRecipeForm(
             }
         }
 
+        // Reszta formularza
         Text(
             text = "Szczegóły Przepisu",
             style = MaterialTheme.typography.titleMedium,
@@ -250,7 +254,7 @@ fun AddRecipeForm(
             },
             modifier = Modifier.align(Alignment.End)
         ) {
-            Text("Zapisz przepis")
+            Text("Zapisz Przepis")
         }
     }
 }
