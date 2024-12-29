@@ -31,10 +31,15 @@ import com.example.przepisx.R
 @Composable
 fun ProfilePage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
     val authState = authViewModel.authState.observeAsState()
+    val userData = authViewModel.userData.observeAsState(initial = emptyMap())
 
     LaunchedEffect(authState.value) {
-        when(authState.value) {
+        when (authState.value) {
             is AuthState.Unauthenticated -> navController.navigate("login")
+            is AuthState.Authenticated -> {
+                val userId = (authState.value as AuthState.Authenticated).userId
+                authViewModel.fetchUserData(userId)
+            }
             else -> Unit
         }
     }
@@ -77,7 +82,7 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController, aut
         }
 
         Text(
-            text = "Jan Kowalski",
+            text = userData.value["firstName"] ?: "Unknown",
             fontSize = 26.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 16.dp),
@@ -85,61 +90,39 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController, aut
         )
 
         Text(
-            text = "janKowalski@gmail.com",
+            text = userData.value["lastName"] ?: "",
+            fontSize = 26.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color(android.graphics.Color.parseColor("#32357a"))
+        )
+
+        Text(
+            text = userData.value["email"] ?: "",
             fontSize = 18.sp,
             color = Color(android.graphics.Color.parseColor("#747679"))
         )
+
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 32.dp, end = 32.dp, top = 32.dp, bottom = 10.dp)
-                .height(55.dp),
+                .height(55.dp)
+                .clickable { navController.navigate("myRecipes") },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
-                Image(painter = painterResource(id = R.drawable.btn_3), null, modifier = Modifier
-                    .padding(end = 5.dp)
-                    .clickable {})
-            }
-            Column(modifier = Modifier
-                .padding(start = 16.dp)
-                .weight(1f)) {
-                Text(
-                    text = "Edytuj Zdjecie",
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
+                Image(
+                    painter = painterResource(id = R.drawable.btn_4),
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 5.dp)
                 )
             }
             Column(
-                modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.Center
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .weight(1f)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.arrow),
-                    null,
-                    Modifier
-                        .padding(end = 5.dp)
-                        .clickable {  }
-                )
-            }
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 32.dp, end = 32.dp, top = 32.dp, bottom = 10.dp)
-                .height(55.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
-                Image(painter = painterResource(id = R.drawable.btn_4), null, modifier = Modifier
-                    .padding(end = 5.dp)
-                    .clickable {})
-            }
-            Column(modifier = Modifier
-                .padding(start = 16.dp)
-                .weight(1f)) {
                 Text(
                     text = "Moje Przepisy",
                     color = Color.Black,
@@ -153,24 +136,23 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController, aut
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.arrow),
-                    null,
-                    Modifier
-                        .padding(end = 5.dp)
-                        .clickable {  }
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 5.dp)
                 )
             }
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 32.dp, end = 32.dp, top = 32.dp, bottom = 10.dp)
-                .height(55.dp),
+                .height(55.dp)
+                .clickable { authViewModel.signout() },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
                 Image(painter = painterResource(id = R.drawable.btn_6), null, modifier = Modifier
-                    .padding(end = 5.dp)
-                    .clickable {})
+                    .padding(end = 5.dp))
             }
             Column(modifier = Modifier
                 .padding(start = 16.dp)
@@ -191,9 +173,6 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController, aut
                     null,
                     modifier
                         .padding(end = 5.dp)
-                        .clickable {
-                            authViewModel.signout()
-                        }
                 )
             }
         }

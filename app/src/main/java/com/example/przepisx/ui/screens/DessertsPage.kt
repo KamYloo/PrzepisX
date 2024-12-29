@@ -44,7 +44,6 @@ fun DessertsPage(modifier: Modifier = Modifier, navController: NavController) {
                 .fillMaxSize()
         ) {
 
-            // Banner Image
             Image(
                 painter = painterResource(id = R.drawable.banner),
                 contentDescription = "Banner",

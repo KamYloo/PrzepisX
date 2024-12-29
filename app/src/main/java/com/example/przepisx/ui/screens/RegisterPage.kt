@@ -51,9 +51,10 @@ import com.example.przepisx.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterPage(modifier: Modifier = Modifier, navController: NavController, authViewModel: AuthViewModel) {
-
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
 
     val authState = authViewModel.authState.observeAsState()
     val context = LocalContext.current
@@ -102,17 +103,46 @@ fun RegisterPage(modifier: Modifier = Modifier, navController: NavController, au
             Spacer(modifier = Modifier.height(32.dp))
 
             OutlinedTextField(
+                value = firstName,
+                onValueChange = { firstName = it },
+                label = { Text("First Name", color = Color.White) },
+                placeholder = { Text("Enter your first name", color = Color.LightGray) },
+                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    cursorColor = Color.White,
+                    focusedBorderColor = Color.LightGray,
+                    unfocusedBorderColor = Color.Gray
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = lastName,
+                onValueChange = { lastName = it },
+                label = { Text("Last Name", color = Color.White) },
+                placeholder = { Text("Enter your last name", color = Color.LightGray) },
+                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    cursorColor = Color.White,
+                    focusedBorderColor = Color.LightGray,
+                    unfocusedBorderColor = Color.Gray
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email", color = Color.White) },
                 placeholder = { Text("Enter your email", color = Color.LightGray) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Email,
-                        contentDescription = "Email Icon",
-                        tint = Color.White
-                    )
-                },
                 shape = RoundedCornerShape(12.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -120,9 +150,7 @@ fun RegisterPage(modifier: Modifier = Modifier, navController: NavController, au
                     unfocusedTextColor = Color.White,
                     cursorColor = Color.White,
                     focusedBorderColor = Color.LightGray,
-                    unfocusedBorderColor = Color.Gray,
-                    focusedLabelColor = Color.LightGray,
-                    unfocusedLabelColor = Color.Gray
+                    unfocusedBorderColor = Color.Gray
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -134,13 +162,6 @@ fun RegisterPage(modifier: Modifier = Modifier, navController: NavController, au
                 onValueChange = { password = it },
                 label = { Text("Password", color = Color.White) },
                 placeholder = { Text("Enter your password", color = Color.LightGray) },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Lock,
-                        contentDescription = "Password Icon",
-                        tint = Color.White
-                    )
-                },
                 shape = RoundedCornerShape(12.dp),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -149,9 +170,7 @@ fun RegisterPage(modifier: Modifier = Modifier, navController: NavController, au
                     unfocusedTextColor = Color.White,
                     cursorColor = Color.White,
                     focusedBorderColor = Color.LightGray,
-                    unfocusedBorderColor = Color.Gray,
-                    focusedLabelColor = Color.LightGray,
-                    unfocusedLabelColor = Color.Gray
+                    unfocusedBorderColor = Color.Gray
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -159,7 +178,7 @@ fun RegisterPage(modifier: Modifier = Modifier, navController: NavController, au
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = { authViewModel.register(email, password) },
+                onClick = { authViewModel.register(email, password, firstName, lastName) },
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -177,7 +196,7 @@ fun RegisterPage(modifier: Modifier = Modifier, navController: NavController, au
 
             TextButton(onClick = { navController.navigate("login") }) {
                 Text(
-                    text = "Already have you an account? Login",
+                    text = "Already have an account? Login",
                     color = Color(0xFF64B5F6),
                     style = MaterialTheme.typography.bodyMedium
                 )

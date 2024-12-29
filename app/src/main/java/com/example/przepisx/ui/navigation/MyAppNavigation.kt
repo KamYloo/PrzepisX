@@ -11,6 +11,7 @@ import com.example.przepisx.ui.screens.DessertsPage
 import com.example.przepisx.ui.screens.EditRecipePage
 import com.example.przepisx.ui.screens.HomePage
 import com.example.przepisx.ui.screens.LoginPage
+import com.example.przepisx.ui.screens.MyRecipesPage
 import com.example.przepisx.ui.screens.ProfilePage
 import com.example.przepisx.ui.screens.RecipePage
 import com.example.przepisx.ui.screens.RegisterPage
@@ -29,6 +30,12 @@ fun MyAppNavigation(modifier: Modifier = Modifier, authViewModel: AuthViewModel)
         }
         composable("home") {
             HomePage(modifier, navController)
+        }
+
+        composable("myRecipes") {
+            LoggedInScaffold(navController) {
+                MyRecipesPage(it, navController)
+            }
         }
 
         composable("recipes") {
