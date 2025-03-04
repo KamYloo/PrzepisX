@@ -21,7 +21,5 @@ their phone thanks to integration with an external API.
 - Random recipe can come from Spoonacular API.
 
 ## Sample Screenshots
-![Screenshot_20250304-164737](https://github.com/user-attachments/assets/537000ef-3237-421d-bfec-dd8f4ede7757)
-![Screenshot_20250304-164849](https://github.com/user-attachments/assets/8fa12134-d09a-4bec-8268-9de30d2480f0)
-![Screenshot_20250304-164832](https://github.com/user-attachments/assets/84570664-549f-4917-b223-fc42febfb30e)
-![Screenshot_20250304-164837](https://github.com/user-attachments/assets/0988ed9a-1f4c-4338-9cc5-a1e9c272a7fd)
+![image](https://github.com/user-attachments/assets/e694f78d-d732-4317-bd99-d9568e47036b)
+
